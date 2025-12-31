@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <title>個人履歷｜簡報式展示</title>
+  <title>你的名字｜簡報式個人履歷</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
@@ -18,124 +18,132 @@
       width: 100vw;
       padding: 4rem;
       box-sizing: border-box;
+      animation: fade 0.4s ease;
     }
     .slide.active {
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    h2 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      color: #a5b4fc;
-    }
-    p, li {
-      font-size: 1.2rem;
-      line-height: 1.8;
-    }
-    ul {
-      padding-left: 1.2rem;
-    }
-    .hint {
+    h1 { font-size: 3rem; margin-bottom: 0.5rem; }
+    h2 { font-size: 2rem; margin-bottom: 1rem; color: #a5b4fc; }
+    p, li { font-size: 1.2rem; line-height: 1.8; }
+    ul { padding-left: 1.2rem; }
+    .nav {
       position: fixed;
       bottom: 1.5rem;
-      right: 2rem;
-      font-size: 0.9rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.6rem;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #475569;
+    }
+    .dot.active { background: #a5b4fc; }
+    .controls {
+      position: fixed;
+      top: 1rem;
+      right: 1.5rem;
+      display: flex;
+      gap: 0.8rem;
+    }
+    .btn {
+      background: #1e293b;
+      border: none;
+      color: white;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    .arrows {
+      position: fixed;
+      left: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .arrow {
+      font-size: 1.5rem;
+      cursor: pointer;
       opacity: 0.6;
     }
   </style>
 </head>
 <body>
 
-  <!-- Slide 1 -->
-  <section class="slide active">
-    <h1>你的名字</h1>
-    <h2>職稱 / 一句話定位</h2>
-    <p>Email：your@email.com</p>
-    <p>GitHub / LinkedIn</p>
-  </section>
+<!-- Slide 1 -->
+<section class="slide active">
+  <h1>你的名字</h1>
+  <h2>我能為團隊解決問題，而不只是完成任務</h2>
+  <p>專注於成果導向、跨部門合作與持續優化。</p>
+</section>
 
-  <!-- Slide 2 -->
-  <section class="slide">
-    <h2>我是誰</h2>
-    <p>
-      用 3～4 行說清楚你的背景、專長，以及你能為團隊帶來的價值。
-    </p>
-  </section>
+<!-- Slide 2 -->
+<section class="slide">
+  <h2>我適合被錄用的原因</h2>
+  <ul>
+    <li>能把複雜問題拆解成可執行方案</li>
+    <li>習慣對結果負責，而非只交付工作</li>
+    <li>理解商業目標，技術只是手段</li>
+  </ul>
+</section>
 
-  <!-- Slide 3 -->
-  <section class="slide">
-    <h2>核心技能</h2>
-    <ul>
-      <li>技能一</li>
-      <li>技能二</li>
-      <li>技能三</li>
-      <li>技能四</li>
-    </ul>
-  </section>
+<!-- Slide 3 -->
+<section class="slide">
+  <h2>核心能力</h2>
+  <ul>
+    <li>關鍵問題分析與決策</li>
+    <li>專案推進與溝通協調</li>
+    <li>持續優化與自我驅動</li>
+  </ul>
+</section>
 
-  <!-- Slide 4 -->
-  <section class="slide">
-    <h2>工作經歷</h2>
-    <ul>
-      <li><strong>公司 A</strong> — 職稱（年份）</li>
-      <li><strong>公司 B</strong> — 職稱（年份）</li>
-    </ul>
-  </section>
+<!-- Slide 4 -->
+<section class="slide">
+  <h2>代表經驗</h2>
+  <p><strong>某公司｜職稱</strong></p>
+  <p>在資源有限的情況下，主導專案落地，實際提升效率或營收。</p>
+</section>
 
-  <!-- Slide 5 -->
-  <section class="slide">
-    <h2>專案 / 作品</h2>
-    <ul>
-      <li>專案一：一句話成果</li>
-      <li>專案二：一句話成果</li>
-    </ul>
-  </section>
+<!-- Slide 5 -->
+<section class="slide">
+  <h2>我能為你帶來什麼</h2>
+  <ul>
+    <li>不用反覆提醒的執行力</li>
+    <li>能對齊目標的思考方式</li>
+    <li>長期可成長的合作價值</li>
+  </ul>
+</section>
 
-  <!-- Slide 6 -->
-  <section class="slide">
-    <h2>聯絡我</h2>
-    <p>📧 your@email.com</p>
-    <p>🌐 https://yourname.github.io</p>
-  </section>
+<!-- Slide 6 -->
+<section class="slide">
+  <h2>聯絡我</h2>
+  <p>📧 <a href="mailto:your@email.com" style="color:#a5b4fc">your@email.com</a></p>
+  <p>🌐 https://yourname.com</p>
+</section>
 
-  <div class="hint">點擊滑鼠 或 ↑ ↓ 切換頁面</div>
+<div class="arrows">
+  <div class="arrow" onclick="prev()">⬆</div>
+  <div class="arrow" onclick="next()">⬇</div>
+</div>
 
-  <script>
-    const slides = document.querySelectorAll('.slide');
-    let current = 0;
+<div class="controls">
+  <button class="btn" onclick="window.print()">匯出 PDF</button>
+</div>
 
-    function showSlide(index) {
-      slides.forEach((s, i) => {
-        s.classList.toggle('active', i === index);
-      });
-    }
+<div class="nav" id="nav"></div>
 
-    function nextSlide() {
-      if (current < slides.length - 1) {
-        current++;
-        showSlide(current);
-      }
-    }
-
-    function prevSlide() {
-      if (current > 0) {
-        current--;
-        showSlide(current);
-      }
-    }
-
-    document.addEventListener('click', nextSlide);
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowDown') nextSlide();
-      if (e.key === 'ArrowUp') prevSlide();
-    });
-  </script>
-
-</body>
-</html>
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const nav = document.getElem
