@@ -2,134 +2,140 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <title>個人履歷｜你的名字</title>
+  <title>個人履歷｜簡報式展示</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f3f4f6;
       margin: 0;
-      color: #111827;
-      line-height: 1.6;
-    }
-    .container {
-      max-width: 900px;
-      margin: 2rem auto;
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f172a;
+      color: white;
       overflow: hidden;
     }
-    header {
-      background: linear-gradient(135deg, #6366f1, #4f46e5);
-      color: white;
-      padding: 2.5rem;
+    .slide {
+      display: none;
+      height: 100vh;
+      width: 100vw;
+      padding: 4rem;
+      box-sizing: border-box;
     }
-    header h1 {
-      margin: 0;
-      font-size: 2.2rem;
+    .slide.active {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
-    header p {
-      margin: 0.5rem 0 0;
-      opacity: 0.95;
-    }
-    section {
-      padding: 2rem 2.5rem;
-      border-bottom: 1px solid #e5e7eb;
-    }
-    section:last-child {
-      border-bottom: none;
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
     }
     h2 {
-      margin-top: 0;
-      font-size: 1.4rem;
-      color: #4338ca;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #a5b4fc;
+    }
+    p, li {
+      font-size: 1.2rem;
+      line-height: 1.8;
     }
     ul {
       padding-left: 1.2rem;
     }
-    li {
-      margin-bottom: 0.5rem;
-    }
-    .tag {
-      display: inline-block;
-      background: #eef2ff;
-      color: #3730a3;
-      padding: 0.3rem 0.7rem;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      margin: 0.2rem 0.3rem 0.2rem 0;
-    }
-    footer {
-      text-align: center;
-      padding: 1.5rem;
-      font-size: 0.85rem;
-      color: #6b7280;
+    .hint {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 2rem;
+      font-size: 0.9rem;
+      opacity: 0.6;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>你的名字</h1>
-      <p>職稱／一句話定位自己（例如：產品經理 / 軟體工程師）</p>
-      <p>Email：yourname@email.com ｜ LinkedIn / GitHub</p>
-    </header>
 
-    <section>
-      <h2>個人簡介</h2>
-      <p>
-        這裡用 3～4 行說清楚你是誰、擅長什麼、能幫對方解決什麼問題。
-        重點不是謙虛，而是「清楚」。
-      </p>
-    </section>
+  <!-- Slide 1 -->
+  <section class="slide active">
+    <h1>你的名字</h1>
+    <h2>職稱 / 一句話定位</h2>
+    <p>Email：your@email.com</p>
+    <p>GitHub / LinkedIn</p>
+  </section>
 
-    <section>
-      <h2>核心技能</h2>
-      <div>
-        <span class="tag">技能一</span>
-        <span class="tag">技能二</span>
-        <span class="tag">技能三</span>
-        <span class="tag">技能四</span>
-      </div>
-    </section>
+  <!-- Slide 2 -->
+  <section class="slide">
+    <h2>我是誰</h2>
+    <p>
+      用 3～4 行說清楚你的背景、專長，以及你能為團隊帶來的價值。
+    </p>
+  </section>
 
-    <section>
-      <h2>工作經歷</h2>
-      <ul>
-        <li>
-          <strong>公司名稱｜職稱</strong>（2022 – 2024）<br />
-          一句話描述你做了什麼，下一句描述你帶來的成果。
-        </li>
-        <li>
-          <strong>公司名稱｜職稱</strong>（2020 – 2022）<br />
-          聚焦影響力，而不是流水帳。
-        </li>
-      </ul>
-    </section>
+  <!-- Slide 3 -->
+  <section class="slide">
+    <h2>核心技能</h2>
+    <ul>
+      <li>技能一</li>
+      <li>技能二</li>
+      <li>技能三</li>
+      <li>技能四</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>專案或作品</h2>
-      <ul>
-        <li>
-          <strong>專案名稱</strong> — 一句話說明這個專案的價值或成果
-        </li>
-        <li>
-          <strong>專案名稱</strong> — 技術 / 商業 / 使用者成效
-        </li>
-      </ul>
-    </section>
+  <!-- Slide 4 -->
+  <section class="slide">
+    <h2>工作經歷</h2>
+    <ul>
+      <li><strong>公司 A</strong> — 職稱（年份）</li>
+      <li><strong>公司 B</strong> — 職稱（年份）</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>學歷</h2>
-      <ul>
-        <li>學校名稱｜科系（畢業年）</li>
-      </ul>
-    </section>
+  <!-- Slide 5 -->
+  <section class="slide">
+    <h2>專案 / 作品</h2>
+    <ul>
+      <li>專案一：一句話成果</li>
+      <li>專案二：一句話成果</li>
+    </ul>
+  </section>
 
-    <footer>
-      © 2025 你的名字｜個人履歷網站
-    </footer>
-  </div>
+  <!-- Slide 6 -->
+  <section class="slide">
+    <h2>聯絡我</h2>
+    <p>📧 your@email.com</p>
+    <p>🌐 https://yourname.github.io</p>
+  </section>
+
+  <div class="hint">點擊滑鼠 或 ↑ ↓ 切換頁面</div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let current = 0;
+
+    function showSlide(index) {
+      slides.forEach((s, i) => {
+        s.classList.toggle('active', i === index);
+      });
+    }
+
+    function nextSlide() {
+      if (current < slides.length - 1) {
+        current++;
+        showSlide(current);
+      }
+    }
+
+    function prevSlide() {
+      if (current > 0) {
+        current--;
+        showSlide(current);
+      }
+    }
+
+    document.addEventListener('click', nextSlide);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') nextSlide();
+      if (e.key === 'ArrowUp') prevSlide();
+    });
+  </script>
+
 </body>
 </html>
