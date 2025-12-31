@@ -1,45 +1,135 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的無聊網站</title>
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: Arial, sans-serif;
-            transition: background-color 0.5s;
-            cursor: pointer;
-            text-align: center;
-        }
-        h1 {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            user-select: none;
-        }
-        p { margin-top: 10px; color: #666; }
-    </style>
+  <meta charset="UTF-8" />
+  <title>個人履歷｜你的名字</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      color: #111827;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    header {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: white;
+      padding: 2.5rem;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.2rem;
+    }
+    header p {
+      margin: 0.5rem 0 0;
+      opacity: 0.95;
+    }
+    section {
+      padding: 2rem 2.5rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    section:last-child {
+      border-bottom: none;
+    }
+    h2 {
+      margin-top: 0;
+      font-size: 1.4rem;
+      color: #4338ca;
+    }
+    ul {
+      padding-left: 1.2rem;
+    }
+    li {
+      margin-bottom: 0.5rem;
+    }
+    .tag {
+      display: inline-block;
+      background: #eef2ff;
+      color: #3730a3;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      margin: 0.2rem 0.3rem 0.2rem 0;
+    }
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+  </style>
 </head>
-<body onclick="changeColor()">
+<body>
+  <div class="container">
+    <header>
+      <h1>你的名字</h1>
+      <p>職稱／一句話定位自己（例如：產品經理 / 軟體工程師）</p>
+      <p>Email：yourname@email.com ｜ LinkedIn / GitHub</p>
+    </header>
 
-    <div>
-        <h1>點擊畫面任何地方 🎨</h1>
-        <p>這是我隨便做的一個網站</p>
-    </div>
+    <section>
+      <h2>個人簡介</h2>
+      <p>
+        這裡用 3～4 行說清楚你是誰、擅長什麼、能幫對方解決什麼問題。
+        重點不是謙虛，而是「清楚」。
+      </p>
+    </section>
 
-    <script>
-        function changeColor() {
-            const randomColor = Math.floor(Math.random()*16777215).toString(16);
-            document.body.style.backgroundColor = "#" + randomColor;
-        }
-        // 一開始先變個色
-        changeColor();
-    </script>
+    <section>
+      <h2>核心技能</h2>
+      <div>
+        <span class="tag">技能一</span>
+        <span class="tag">技能二</span>
+        <span class="tag">技能三</span>
+        <span class="tag">技能四</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>工作經歷</h2>
+      <ul>
+        <li>
+          <strong>公司名稱｜職稱</strong>（2022 – 2024）<br />
+          一句話描述你做了什麼，下一句描述你帶來的成果。
+        </li>
+        <li>
+          <strong>公司名稱｜職稱</strong>（2020 – 2022）<br />
+          聚焦影響力，而不是流水帳。
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>專案或作品</h2>
+      <ul>
+        <li>
+          <strong>專案名稱</strong> — 一句話說明這個專案的價值或成果
+        </li>
+        <li>
+          <strong>專案名稱</strong> — 技術 / 商業 / 使用者成效
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>學歷</h2>
+      <ul>
+        <li>學校名稱｜科系（畢業年）</li>
+      </ul>
+    </section>
+
+    <footer>
+      © 2025 你的名字｜個人履歷網站
+    </footer>
+  </div>
 </body>
 </html>
