@@ -146,4 +146,38 @@
 
 <script>
   const slides = document.querySelectorAll('.slide');
-  const nav = document.getElem
+  const nav = document.getElementById('nav');
+  let current = 0;
+
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot';
+    nav.appendChild(d);
+  });
+
+  function render() {
+    slides.forEach((s, i) => s.classList.toggle('active', i === current));
+    [...nav.children].forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  function next() { if (current < slides.length - 1) { current++; render(); } }
+  function prev() { if (current > 0) { current--; render(); } }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') next();
+    if (e.key === 'ArrowUp') prev();
+  });
+
+  let touchStartY = 0;
+  document.addEventListener('touchstart', e => touchStartY = e.touches[0].clientY);
+  document.addEventListener('touchend', e => {
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (dy < -40) next();
+    if (dy > 40) prev();
+  });
+
+  render();
+</script>
+
+</body>
+</html>
