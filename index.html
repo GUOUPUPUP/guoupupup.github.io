@@ -40,7 +40,14 @@
     ul { padding-left: 1.2rem; }
 
     /* 安全點擊區：內容區不翻頁 */
-    .content { pointer-events: auto; }
+    .content {
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
 
     /* 導航點 */
     .nav {
