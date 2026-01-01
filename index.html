@@ -79,13 +79,12 @@
 
     @media (max-width: 768px) { .contact-wrap { flex-direction: column; gap: 2rem; } }
 
-    /* 粒子背景 */
     .particle { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.15); pointer-events: none; }
   </style>
 </head>
 <body>
 
-<!-- 1. 打招呼頁 -->
+<!-- 頁面內容保持原樣，第一頁打招呼 -->
 <section class="slide active">
   <div class="content">
     <h1>你好 👋</h1>
@@ -94,8 +93,7 @@
   </div>
 </section>
 
-<!-- 2~8頁保持原樣（省略為簡潔，請參考原 HTML） -->
-<!-- 第7頁已改為 contact-wrap + success 提示 -->
+<!-- 其餘頁面請保留原本 2~8頁內容，確保每頁 class='slide' -->
 
 <div class="arrows">
   <div class="arrow" onclick="prev()">⬆</div>
@@ -108,7 +106,31 @@
 <div class="page" id="page"></div>
 
 <script>
-  // 粒子生成
+  const slides = document.querySelectorAll('.slide');
+  const nav = document.getElementById('nav');
+  const page = document.getElementById('page');
+  let current = 0;
+
+  // 生成 nav dot
+  slides.forEach(() => { const d = document.createElement('div'); d.className = 'dot'; nav.appendChild(d); });
+
+  function render(){
+    slides.forEach((s,i)=>{ s.classList.remove('enter-left','enter-right'); s.classList.toggle('active',i===current); });
+    [...nav.children].forEach((d,i)=>d.classList.toggle('active',i===current));
+    page.textContent=`${current+1} / ${slides.length}`;
+  }
+
+  function next(){ if(current<slides.length-1){ slides[current].classList.add('enter-left'); current++; render(); } }
+  function prev(){ if(current>0){ slides[current].classList.add('enter-right'); current--; render(); } }
+
+  document.addEventListener('keydown',e=>{ if(['ArrowDown','ArrowRight',' '].includes(e.key)) next(); if(['ArrowUp','ArrowLeft'].includes(e.key)) prev(); });
+  let touchStartY=0;
+  document.addEventListener('touchstart',e=>touchStartY=e.touches[0].clientY);
+  document.addEventListener('touchend',e=>{ const dy=e.changedTouches[0].clientY-touchStartY; if(dy<-50) next(); if(dy>50) prev(); });
+
+  render();
+
+  // 粒子背景（放在 render 後）
   for(let i=0;i<30;i++){
     const p=document.createElement('div');
     p.className='particle';
@@ -118,38 +140,6 @@
     document.body.appendChild(p);
   }
 
-  const slides = document.querySelectorAll('.slide');
-  const nav = document.getElementById('nav');
-  const page = document.getElementById('page');
-  let current = 0;
-
-  slides.forEach(()=>{ const d=document.createElement('div'); d.className='dot'; nav.appendChild(d); });
-
-  function render(){
-    slides.forEach((s,i)=>{
-      s.classList.remove('enter-left','enter-right');
-      s.classList.toggle('active',i===current);
-    });
-    [...nav.children].forEach((d,i)=>d.classList.toggle('active',i===current));
-    page.textContent=`${current+1} / ${slides.length}`;
-  }
-
-  function next(){ if(current<slides.length-1){ slides[current].classList.add('enter-left'); current++; render(); }}
-  function prev(){ if(current>0){ slides[current].classList.add('enter-right'); current--; render(); }}
-
-  document.addEventListener('keydown',e=>{
-    if(['ArrowDown','ArrowRight',' '].includes(e.key)) next();
-    if(['ArrowUp','ArrowLeft'].includes(e.key)) prev();
-  });
-
-  let touchStartY=0;
-  document.addEventListener('touchstart',e=>touchStartY=e.touches[0].clientY);
-  document.addEventListener('touchend',e=>{
-    const dy=e.changedTouches[0].clientY-touchStartY;
-    if(dy<-50) next();
-    if(dy>50) prev();
-  });
-
   // 表單送出
   function handleSubmit(e){
     e.preventDefault();
@@ -157,9 +147,6 @@
     fetch(form.action,{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}})
       .then(res=>{ if(res.ok){ form.reset(); document.getElementById('successMsg').style.display='block'; } else { alert('送出失敗，請直接寄信聯絡我'); }})
       .catch(()=>alert('網路異常，請稍後再試'));
-  }
-
-  render();
 </script>
 
 </body>
