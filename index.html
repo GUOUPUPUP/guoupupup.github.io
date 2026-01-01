@@ -18,7 +18,7 @@
     .slide {
       position: absolute;
       inset: 0;
-      display: flex;
+      display: none;
       justify-content: center;
       align-items: center;
       opacity: 0;
@@ -26,31 +26,21 @@
     }
     .slide.active {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
+      opacity: 1;
     }
-    @keyframes fade {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    h1 { font-size: 3rem; margin-bottom: 0.5rem; }
-    h2 { font-size: 2rem; margin-bottom: 1rem; color: #a5b4fc; }
-    p, li { font-size: 1.2rem; line-height: 1.8; }
-    ul { padding-left: 1.2rem; }
-
-    /* 安全點擊區：內容區不翻頁 */
     .content {
-      width: 100%;
-      height: 100%;
-      max-width: 900px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
+      padding: 2rem;
     }
+    h1 { font-size: 3rem; margin-bottom: 0.5rem; }
+    h2 { font-size: 2rem; margin-bottom: 1rem; color: #a5b4fc; font-weight: 400; }
+    p, li { font-size: 1.2rem; line-height: 1.8; }
+    ul { padding-left: 1.2rem; }
 
-    /* 導航點 */
     .nav {
       position: fixed;
       bottom: 1.5rem;
@@ -67,7 +57,6 @@
     }
     .dot.active { background: #a5b4fc; }
 
-    /* 頁碼 */
     .page {
       position: fixed;
       bottom: 1.4rem;
@@ -76,7 +65,6 @@
       opacity: 0.65;
     }
 
-    /* 箭頭控制 */
     .arrows {
       position: fixed;
       left: 1.2rem;
@@ -94,7 +82,6 @@
     }
     .arrow:hover { opacity: 0.9; }
 
-    /* 工具列 */
     .controls {
       position: fixed;
       top: 1rem;
@@ -115,56 +102,70 @@
 </head>
 <body>
 
-<section class="slide active"><div class="content" style="text-align:center; align-items:center;">
-  <h1 style="margin-bottom:0.8rem;">你好 👋</h1>
-  <h2 style="font-weight:400; opacity:0.9;">很高興認識你</h2>
-  <p style="margin-top:1.2rem; font-size:1.05rem; opacity:0.7;">⬇ ⬆ 或 空白鍵 瀏覽</p>
-</div></section>
+<section class="slide active">
+  <div class="content">
+    <h1 style="margin-bottom:0.8rem;">你好 👋</h1>
+    <h2 style="opacity:0.9; font-weight:400;">很高興認識你</h2>
+    <p style="margin-top:1.2rem; font-size:1.05rem; opacity:0.7;">⬇ ⬆ 或 空白鍵 瀏覽</p>
+  </div>
+</section>
 
-<section class="slide"><div class="content"><div class="content">
-  <h1>你的名字</h1>
-  <h2>我能為團隊解決問題，而不只是完成任務</h2>
-  <p>成果導向｜主動溝通｜持續優化</p>
-</div></section>
+<section class="slide">
+  <div class="content">
+    <h1>你的名字</h1>
+    <h2>我能為團隊解決問題，而不只是完成任務</h2>
+    <p>成果導向｜主動溝通｜持續優化</p>
+  </div>
+</section>
 
-<section class="slide"><div class="content">
-  <h2>為什麼值得錄用我</h2>
-  <ul>
-    <li>能快速理解目標並轉化為行動</li>
-    <li>對結果負責，而非只完成指派事項</li>
-    <li>在模糊情境中仍能推進事情</li>
-  </ul>
-</div></section>
+<section class="slide">
+  <div class="content">
+    <h2>為什麼值得錄用我</h2>
+    <ul>
+      <li>能快速理解目標並轉化為行動</li>
+      <li>對結果負責，而非只完成指派事項</li>
+      <li>在模糊情境中仍能推進事情</li>
+    </ul>
+  </div>
+</section>
 
-<section class="slide"><div class="content">
-  <h2>核心能力</h2>
-  <ul>
-    <li>問題拆解與決策</li>
-    <li>跨部門溝通與協作</li>
-    <li>自我驅動與持續成長</li>
-  </ul>
-</div></section>
+<section class="slide">
+  <div class="content">
+    <h2>核心能力</h2>
+    <ul>
+      <li>問題拆解與決策</li>
+      <li>跨部門溝通與協作</li>
+      <li>自我驅動與持續成長</li>
+    </ul>
+  </div>
+</section>
 
-<section class="slide"><div class="content">
-  <h2>代表經驗</h2>
-  <p><strong>某公司｜職稱</strong></p>
-  <p>在限制條件下完成專案落地，帶來實際成效。</p>
-</div></section>
+<section class="slide">
+  <div class="content">
+    <h2>代表經驗</h2>
+    <p><strong>某公司｜職稱</strong></p>
+    <p>在限制條件下完成專案落地，帶來實際成效。</p>
+  </div>
+</section>
 
-<section class="slide"><div class="content">
-  <h2>我能為你帶來什麼</h2>
-  <ul>
-    <li>不需反覆提醒的執行力</li>
-    <li>能對齊目標的思考方式</li>
-    <li>可長期合作的價值</li>
-  </ul>
-</div></section>
+<section class="slide">
+  <div class="content">
+    <h2>我能為你帶來什麼</h2>
+    <ul>
+      <li>不需反覆提醒的執行力</li>
+      <li>能對齊目標的思考方式</li>
+      <li>可長期合作的價值</li>
+    </ul>
+  </div>
+</section>
 
-<section class="slide"><div class="content">
-  <h2>聯絡我</h2>
-  <p>📧 <a href="mailto:your@email.com" style="color:#a5b4fc">your@email.com</a></p>
-  <p>🌐 https://yourname.com</p>
-</div></section>
+<section class="slide">
+  <div class="content">
+    <h2>聯絡我</h2>
+    <p>📧 <a href="mailto:your@email.com" style="color:#a5b4fc">your@email.com</a></p>
+    <p>🌐 https://yourname.com</p>
+  </div>
+</section>
 
 <div class="arrows">
   <div class="arrow" onclick="prev()">⬆</div>
@@ -199,13 +200,11 @@
   function next() { if (current < slides.length - 1) { current++; render(); } }
   function prev() { if (current > 0) { current--; render(); } }
 
-  // 鍵盤控制（像 Keynote）
   document.addEventListener('keydown', e => {
     if (['ArrowDown','ArrowRight',' '].includes(e.key)) next();
     if (['ArrowUp','ArrowLeft'].includes(e.key)) prev();
   });
 
-  // 行動裝置手勢
   let touchStartY = 0;
   document.addEventListener('touchstart', e => touchStartY = e.touches[0].clientY);
   document.addEventListener('touchend', e => {
