@@ -207,14 +207,12 @@
       </div>
 
       <!-- 右：表單 -->
-      <form style="flex:1; max-width:420px;" 
-        onsubmit="event.preventDefault(); alert('表單已提交！');"
-        action="https://formspree.io/f/mbdllynz" method="POST">
-      <input type="text" name="name" placeholder="姓名" required \/>
-      <input type="email" name="email" placeholder="電子郵件" required \/>
-      <textarea name="message" placeholder="訊息" rows="4" required><\/textarea>
-      <button type="submit" class="submit">送出</button>
-      
+        <form style="flex:1; max-width:420px;" action="https://formspree.io/f/mbdllynz" method="POST">
+        <input type="text" name="name" placeholder="姓名" required \/>
+        <input type="email" name="email" placeholder="電子郵件" required \/>
+        <textarea name="message" placeholder="訊息" rows="4" required><\/textarea>
+        <button type="submit" class="submit">送出</button>
+      </form>
     </div>
   </div>
 </section>
@@ -279,6 +277,3 @@
 
 </body>
 </html>
-
-
-
