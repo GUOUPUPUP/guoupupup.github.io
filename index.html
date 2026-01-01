@@ -15,7 +15,6 @@
       color: white;
       overflow: hidden;
     }
-
     .slide {
       position: absolute;
       inset: 0;
@@ -23,17 +22,12 @@
       justify-content: center;
       align-items: center;
       opacity: 0;
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transition: opacity 0.4s ease;
     }
     .slide.active {
       display: flex;
       opacity: 1;
-      transform: translateX(0);
     }
-
-    .slide.enter-left { transform: translateX(-20px); }
-    .slide.enter-right { transform: translateX(20px); }
-
     .content {
       display: flex;
       flex-direction: column;
@@ -44,47 +38,113 @@
       width: 100%;
       height: 100%;
     }
-
-    h1 { font-size: 4rem; margin-bottom: 0.5rem; animation: bounce 1s ease; }
+    h1 { font-size: 4rem; margin-bottom: 0.5rem; }
     h2 { font-size: 2.5rem; margin-bottom: 1rem; color: #a5b4fc; font-weight: 400; }
     p, li, input, textarea, button { font-size: 1.5rem; line-height: 1.8; }
     ul { padding-left: 1.2rem; }
 
-    @keyframes bounce {
-      0% { transform: translateY(-10px); }
-      50% { transform: translateY(5px); }
-      100% { transform: translateY(0); }
+    .nav {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.6rem;
     }
-
-    .nav { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.6rem; }
-    .dot { width: 10px; height: 10px; border-radius: 50%; background: #475569; }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #475569;
+    }
     .dot.active { background: #a5b4fc; }
 
-    .page { position: fixed; bottom: 1.4rem; right: 1.8rem; font-size: 0.95rem; opacity: 0.65; }
+    .page {
+      position: fixed;
+      bottom: 1.4rem;
+      right: 1.8rem;
+      font-size: 0.95rem;
+      opacity: 0.65;
+    }
 
-    .arrows { position: fixed; left: 1.2rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 0.6rem; }
-    .arrow { font-size: 2rem; cursor: pointer; opacity: 0.55; user-select: none; }
+    .arrows {
+      position: fixed;
+      left: 1.2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .arrow {
+      font-size: 2rem;
+      cursor: pointer;
+      opacity: 0.55;
+      user-select: none;
+    }
     .arrow:hover { opacity: 0.9; }
 
-    .controls { position: fixed; top: 1rem; right: 1.5rem; display: flex; gap: 0.6rem; }
-    .btn { background: #1e293b; border: none; color: white; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.95rem; }
+    .controls {
+      position: fixed;
+      top: 1rem;
+      right: 1.5rem;
+      display: flex;
+      gap: 0.6rem;
+    }
+    .btn {
+      background: #1e293b;
+      border: none;
+      color: white;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
 
-    form { display: flex; flex-direction: column; gap: 1rem; width: 100%; max-width: 400px; margin-top: 1rem; }
-    input, textarea { padding: 0.6rem; border-radius: 6px; border: none; font-size: 1.2rem; }
-    button.submit { background: #3b82f6; color: white; border: none; padding: 0.8rem; border-radius: 6px; font-size: 1.2rem; cursor: pointer; }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+      max-width: 400px;
+      margin-top: 1rem;
+    }
+    input, textarea {
+      padding: 0.6rem;
+      border-radius: 6px;
+      border: none;
+      font-size: 1.2rem;
+    }
+    button.submit {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 0.8rem;
+      border-radius: 6px;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
 
-    .success { margin-top: 1.2rem; font-size: 1.1rem; color: #a5b4fc; display: none; }
+    /* 表單送出成功提示 */
+    .success {
+      margin-top: 1.2rem;
+      font-size: 1.1rem;
+      color: #a5b4fc;
+      display: none;
+    }
 
-    .contact-wrap { display:flex; gap:3rem; width:100%; justify-content:center; align-items:flex-start; margin-top:2rem; }
-
-    @media (max-width: 768px) { .contact-wrap { flex-direction: column; gap: 2rem; } }
-
-    .particle { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.15); pointer-events: none; }
+    /* 手機版聯絡頁調整 */
+    @media (max-width: 768px) {
+      .contact-wrap {
+        flex-direction: column;
+        gap: 2rem;
+      }
+    }
   </style>
 </head>
 <body>
 
-<!-- 頁面內容保持原樣，第一頁打招呼 -->
+<!-- 1. 打招呼頁 -->
 <section class="slide active">
   <div class="content">
     <h1>你好 👋</h1>
@@ -93,15 +153,105 @@
   </div>
 </section>
 
-<!-- 其餘頁面請保留原本 2~8頁內容，確保每頁 class='slide' -->
+<!-- 2. 自我介紹 -->
+<section class="slide">
+  <div class="content">
+    <h1>你的名字</h1>
+    <h2>我能為團隊解決問題，而不只是完成任務</h2>
+    <p>成果導向｜主動溝通｜持續優化</p>
+  </div>
+</section>
+
+<!-- 3. 為什麼錄用我 -->
+<section class="slide">
+  <div class="content">
+    <h2>為什麼值得錄用我</h2>
+    <ul>
+      <li>能快速理解目標並轉化為行動</li>
+      <li>對結果負責，而非只完成指派事項</li>
+      <li>在模糊情境中仍能推進事情</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 4. 核心能力 -->
+<section class="slide">
+  <div class="content">
+    <h2>核心能力</h2>
+    <ul>
+      <li>問題拆解與決策</li>
+      <li>跨部門溝通與協作</li>
+      <li>自我驅動與持續成長</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 5. 代表經驗 -->
+<section class="slide">
+  <div class="content">
+    <h2>代表經驗</h2>
+    <p><strong>某公司｜職稱</strong></p>
+    <p>在限制條件下完成專案落地，帶來實際成效。</p>
+  </div>
+</section>
+
+<!-- 6. 我能帶來什麼價值 -->
+<section class="slide">
+  <div class="content">
+    <h2>我能為你帶來什麼</h2>
+    <ul>
+      <li>不需反覆提醒的執行力</li>
+      <li>能對齊目標的思考方式</li>
+      <li>可長期合作的價值</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 7. 聯絡我（含表單＋聯繫方式） -->
+<section class="slide">
+  <div class="content" style="max-width:1000px;">
+    <h2>聯絡我</h2>
+    <div class="contact-wrap" style="display:flex; gap:3rem; width:100%; justify-content:center; align-items:flex-start; margin-top:2rem;">
+      <!-- 左：聯繫方式 -->
+      <div style="flex:1; text-align:center; opacity:0.9;">
+        <p><strong>Email</strong></p>
+        <p>yourname@email.com</p>
+        <p style="margin-top:1.2rem;"><strong>電話</strong></p>
+        <p>+886 9xx-xxx-xxx</p>
+        <p style="margin-top:1.2rem;"><strong>所在地</strong></p>
+        <p>Taiwan</p>
+      </div>
+
+      <!-- 右：表單 -->
+      <form style="flex:1; max-width:420px;" action="https://formspree.io/f/mbdllynz" method="POST" onsubmit="handleSubmit(event)">
+  <input type="text" name="name" placeholder="姓名" required />
+  <input type="email" name="email" placeholder="電子郵件" required />
+  <textarea name="message" placeholder="訊息" rows="4" required></textarea>
+  <button type="submit" class="submit">送出</button>
+  <div class="success" id="successMsg">已收到你的訊息，我會盡快回覆你。</div>
+</form>
+    </div>
+  </div>
+</section>
+
+<!-- 8. 結束頁 -->
+<section class="slide">
+  <div class="content">
+    <h1>以上，謝謝你看到這裡</h1>
+    <h2 style="opacity:0.85;">期待有機會進一步聊聊</h2>
+    <p style="margin-top:1.5rem; font-size:1.2rem; opacity:0.6;">（這是最後一頁）</p>
+  </div>
+</section>
 
 <div class="arrows">
   <div class="arrow" onclick="prev()">⬆</div>
   <div class="arrow" onclick="next()">⬇</div>
 </div>
+
 <div class="controls">
   <button class="btn" onclick="window.print()">匯出 PDF</button>
 </div>
+
 <div class="nav" id="nav"></div>
 <div class="page" id="page"></div>
 
@@ -111,42 +261,52 @@
   const page = document.getElementById('page');
   let current = 0;
 
-  // 生成 nav dot
-  slides.forEach(() => { const d = document.createElement('div'); d.className = 'dot'; nav.appendChild(d); });
+  slides.forEach(() => {
+    const d = document.createElement('div');
+    d.className = 'dot';
+    nav.appendChild(d);
+  });
 
-  function render(){
-    slides.forEach((s,i)=>{ s.classList.remove('enter-left','enter-right'); s.classList.toggle('active',i===current); });
-    [...nav.children].forEach((d,i)=>d.classList.toggle('active',i===current));
-    page.textContent=`${current+1} / ${slides.length}`;
+  function render() {
+    slides.forEach((s, i) => s.classList.toggle('active', i === current));
+    [...nav.children].forEach((d, i) => d.classList.toggle('active', i === current));
+    page.textContent = `${current + 1} / ${slides.length}`;
   }
 
-  function next(){ if(current<slides.length-1){ slides[current].classList.add('enter-left'); current++; render(); } }
-  function prev(){ if(current>0){ slides[current].classList.add('enter-right'); current--; render(); } }
+  function next() { if (current < slides.length - 1) { current++; render(); } }
+  function prev() { if (current > 0) { current--; render(); } }
 
-  document.addEventListener('keydown',e=>{ if(['ArrowDown','ArrowRight',' '].includes(e.key)) next(); if(['ArrowUp','ArrowLeft'].includes(e.key)) prev(); });
-  let touchStartY=0;
-  document.addEventListener('touchstart',e=>touchStartY=e.touches[0].clientY);
-  document.addEventListener('touchend',e=>{ const dy=e.changedTouches[0].clientY-touchStartY; if(dy<-50) next(); if(dy>50) prev(); });
+  document.addEventListener('keydown', e => {
+    if (['ArrowDown','ArrowRight',' '].includes(e.key)) next();
+    if (['ArrowUp','ArrowLeft'].includes(e.key)) prev();
+  });
+
+  let touchStartY = 0;
+  document.addEventListener('touchstart', e => touchStartY = e.touches[0].clientY);
+  document.addEventListener('touchend', e => {
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (dy < -50) next();
+    if (dy > 50) prev();
+  });
 
   render();
 
-  // 粒子背景（放在 render 後）
-  for(let i=0;i<30;i++){
-    const p=document.createElement('div');
-    p.className='particle';
-    p.style.width=p.style.height=Math.random()*6+2+'px';
-    p.style.top=Math.random()*100+'%';
-    p.style.left=Math.random()*100+'%';
-    document.body.appendChild(p);
-  }
-
-  // 表單送出
-  function handleSubmit(e){
+  function handleSubmit(e) {
     e.preventDefault();
-    const form=e.target;
-    fetch(form.action,{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}})
-      .then(res=>{ if(res.ok){ form.reset(); document.getElementById('successMsg').style.display='block'; } else { alert('送出失敗，請直接寄信聯絡我'); }})
-      .catch(()=>alert('網路異常，請稍後再試'));
+    const form = e.target;
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(res => {
+      if (res.ok) {
+        form.reset();
+        document.getElementById('successMsg').style.display = 'block';
+      } else {
+        alert('送出失敗，請直接寄信聯絡我');
+      }
+    }).catch(() => alert('網路異常，請稍後再試'));
+  }
 </script>
 
 </body>
