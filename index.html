@@ -124,6 +124,22 @@
       font-size: 1.2rem;
       cursor: pointer;
     }
+
+    /* 表單送出成功提示 */
+    .success {
+      margin-top: 1.2rem;
+      font-size: 1.1rem;
+      color: #a5b4fc;
+      display: none;
+    }
+
+    /* 手機版聯絡頁調整 */
+    @media (max-width: 768px) {
+      .contact-wrap {
+        flex-direction: column;
+        gap: 2rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -195,7 +211,7 @@
 <section class="slide">
   <div class="content" style="max-width:1000px;">
     <h2>聯絡我</h2>
-    <div style="display:flex; gap:3rem; width:100%; justify-content:center; align-items:flex-start; margin-top:2rem;">
+    <div class="contact-wrap" style="display:flex; gap:3rem; width:100%; justify-content:center; align-items:flex-start; margin-top:2rem;">
       <!-- 左：聯繫方式 -->
       <div style="flex:1; text-align:center; opacity:0.9;">
         <p><strong>Email</strong></p>
@@ -207,17 +223,12 @@
       </div>
 
       <!-- 右：表單 -->
-        <form style="flex:1; max-width:420px;"
-      action="https://formspree.io/f/mbdllynz"
-      method="POST">
-
+      <form style="flex:1; max-width:420px;" action="https://formspree.io/f/mbdllynz" method="POST" onsubmit="handleSubmit(event)">
   <input type="text" name="name" placeholder="姓名" required />
-
   <input type="email" name="email" placeholder="電子郵件" required />
-
   <textarea name="message" placeholder="訊息" rows="4" required></textarea>
-
   <button type="submit" class="submit">送出</button>
+  <div class="success" id="successMsg">已收到你的訊息，我會盡快回覆你。</div>
 </form>
     </div>
   </div>
@@ -279,8 +290,24 @@
   });
 
   render();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(res => {
+      if (res.ok) {
+        form.reset();
+        document.getElementById('successMsg').style.display = 'block';
+      } else {
+        alert('送出失敗，請直接寄信聯絡我');
+      }
+    }).catch(() => alert('網路異常，請稍後再試'));
+  }
 </script>
 
 </body>
 </html>
-
