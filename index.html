@@ -191,16 +191,29 @@
   </div>
 </section>
 
-<!-- 7. 聯絡我（含表單） -->
+<!-- 7. 聯絡我（含表單＋聯繫方式） -->
 <section class="slide">
-  <div class="content">
+  <div class="content" style="max-width:1000px;">
     <h2>聯絡我</h2>
-    <form onsubmit="event.preventDefault(); alert('表單已提交！');">
-      <input type="text" placeholder="姓名" required />
-      <input type="email" placeholder="電子郵件" required />
-      <textarea placeholder="訊息" rows="4" required></textarea>
-      <button type="submit" class="submit">送出</button>
-    </form>
+    <div style="display:flex; gap:3rem; width:100%; justify-content:center; align-items:flex-start; margin-top:2rem;">
+      <!-- 左：聯繫方式 -->
+      <div style="flex:1; text-align:center; opacity:0.9;">
+        <p><strong>Email</strong></p>
+        <p>yourname@email.com</p>
+        <p style="margin-top:1.2rem;"><strong>電話</strong></p>
+        <p>+886 9xx-xxx-xxx</p>
+        <p style="margin-top:1.2rem;"><strong>所在地</strong></p>
+        <p>Taiwan</p>
+      </div>
+
+      <!-- 右：表單 -->
+      <form style="flex:1; max-width:420px;" onsubmit="event.preventDefault(); alert('表單已提交！');">
+        <input type="text" placeholder="姓名" required />
+        <input type="email" placeholder="電子郵件" required />
+        <textarea placeholder="訊息" rows="4" required></textarea>
+        <button type="submit" class="submit">送出</button>
+      </form>
+    </div>
   </div>
 </section>
 
@@ -209,6 +222,7 @@
   <div class="content">
     <h1>以上，謝謝你看到這裡</h1>
     <h2 style="opacity:0.85;">期待有機會進一步聊聊</h2>
+    <p style="margin-top:1.5rem; font-size:1.2rem; opacity:0.6;">（這是最後一頁）</p>
   </div>
 </section>
 
@@ -263,4 +277,3 @@
 
 </body>
 </html>
-
