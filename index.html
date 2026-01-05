@@ -2,77 +2,81 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>AI 手勢立方體 - I Love Jia</title>
+    <title>AI 手勢控制立方體</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
     <style>
-        body { margin: 0; background: #000; overflow: hidden; font-family: 'Arial', sans-serif; }
-        #v-preview { position: fixed; bottom: 20px; right: 20px; width: 150px; transform: scaleX(-1); border: 2px solid #00f2ff; border-radius: 10px; z-index: 10; }
-        #overlay { position: fixed; top: 20px; left: 20px; color: #00f2ff; z-index: 10; text-shadow: 0 0 10px #00f2ff; }
+        body { margin: 0; background: #000; overflow: hidden; font-family: sans-serif; }
+        #v-preview { position: fixed; bottom: 15px; right: 15px; width: 140px; transform: scaleX(-1); border: 2px solid #fff; border-radius: 8px; z-index: 10; }
+        #overlay { position: fixed; top: 15px; left: 15px; color: #fff; background: rgba(0,0,0,0.6); padding: 12px; border-radius: 8px; z-index: 10; pointer-events: none; }
     </style>
 </head>
 <body>
 
 <div id="overlay">
-    <h2>💖 Gesture Cube</h2>
-    <p id="msg">等待 AI 啟動...</p>
+    <div id="msg">🚀 正在初始化 3D 空間...</div>
+    <small>🖐️ 揮手旋轉 | 🤏 捏合縮放 | 🖱️ 滑鼠也可控制</small>
 </div>
 <video id="v-preview"></video>
 
 <script>
     const msg = document.getElementById('msg');
+    const videoElement = document.getElementById('v-preview');
 
-    // --- 1. Three.js 場景設定 ---
+    // --- 1. Three.js 初始化 ---
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    // --- 2. 建立文字貼圖函式 ---
-    function createTextMaterial(text) {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = 512; // 解析度高一點字才清晰
-        canvas.height = 512;
+    // 建立一個彩色漸層立方體
+// 1. 建立一個函數來生成文字貼圖
+function createTextTexture(text) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 256;
+    canvas.height = 256;
 
-        // 背景
-        ctx.fillStyle = '#0f172a'; 
-        ctx.fillRect(0, 0, 512, 512);
+    // 背景顏色
+    ctx.fillStyle = '#1e293b'; 
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 外框
-        ctx.strokeStyle = '#38bdf8';
-        ctx.lineWidth = 20;
-        ctx.strokeRect(0, 0, 512, 512);
+    // 文字樣式
+    ctx.font = 'Bold 60px Arial';
+    ctx.fillStyle = '#38bdf8'; // 亮藍色文字
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    
+    // 將文字畫在畫布中央
+    ctx.fillText(text, 128, 128);
 
-        // 文字
-        ctx.font = 'Bold 120px Arial';
-        ctx.fillStyle = '#38bdf8';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        // 加上一點發光效果
-        ctx.shadowColor = '#38bdf8';
-        ctx.shadowBlur = 30;
-        ctx.fillText(text, 256, 256);
+    const texture = new THREE.CanvasTexture(canvas);
+    return new THREE.MeshBasicMaterial({ map: texture });
+}
 
-        const texture = new THREE.CanvasTexture(canvas);
-        return new THREE.MeshBasicMaterial({ map: texture });
-    }
+// 2. 為六個面準備不同的材質
+// 順序通常是：右、左、上、下、前、後
+const materials = [
+    createTextTexture('I'),      // 右面
+    createTextTexture('LOVE'),   // 左面
+    createTextTexture('Jia'),    // 上面
+    createTextTexture('I'),      // 下面
+    createTextTexture('LOVE'),   // 前面
+    createTextTexture('Jia')     // 後面
+];
 
-    // 將六個面貼上不同的字
-    const materials = [
-        createTextMaterial('I'),    // 右
-        createTextMaterial('LOVE'), // 左
-        createTextMaterial('Jia'),  // 上
-        createTextMaterial('I'),    // 下
-        createTextMaterial('LOVE'), // 前
-        createTextMaterial('Jia')   // 後
-    ];
+// 3. 建立立方體時使用材質陣列
+const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+const cube = new THREE.Mesh(geometry, materials); // 傳入陣列
+scene.add(cube);
 
-    const cube = new THREE.Mesh(new THREE.BoxGeometry(1.5, 1.5, 1.5), materials);
-    scene.add(cube);
     camera.position.z = 5;
+
+    // --- 2. 控制變數 ---
+    let targetX = 0, targetY = 0, targetZ = 5;
+    let isMouseActive = false;
 
     // --- 3. 手勢偵測邏輯 ---
     const hands = new Hands({
@@ -127,6 +131,5 @@
 </script>
 </body>
 </html>
-
 
 
