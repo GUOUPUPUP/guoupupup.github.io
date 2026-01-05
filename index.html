@@ -1,4 +1,38 @@
-// --- 在初始化立方體的部分進行修改 ---
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>AI 手勢控制立方體</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <style>
+        body { margin: 0; background: #000; overflow: hidden; font-family: sans-serif; }
+        #v-preview { position: fixed; bottom: 15px; right: 15px; width: 140px; transform: scaleX(-1); border: 2px solid #fff; border-radius: 8px; z-index: 10; }
+        #overlay { position: fixed; top: 15px; left: 15px; color: #fff; background: rgba(0,0,0,0.6); padding: 12px; border-radius: 8px; z-index: 10; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+<div id="overlay">
+    <div id="msg">🚀 正在初始化 3D 空間...</div>
+    <small>🖐️ 揮手旋轉 | 🤏 捏合縮放 | 🖱️ 滑鼠也可控制</small>
+</div>
+<video id="v-preview"></video>
+
+<script>
+    const msg = document.getElementById('msg');
+    const videoElement = document.getElementById('v-preview');
+
+    // --- 1. Three.js 初始化 ---
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // 建立一個彩色漸層立方體
+    // --- 在初始化立方體的部分進行修改 ---
 
 // 1. 建立一個函數來生成文字貼圖
 function createTextTexture(text) {
@@ -39,3 +73,64 @@ const materials = [
 const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
 const cube = new THREE.Mesh(geometry, materials); // 傳入陣列
 scene.add(cube);
+
+    camera.position.z = 5;
+
+    // --- 2. 控制變數 ---
+    let targetX = 0, targetY = 0, targetZ = 5;
+    let isMouseActive = false;
+
+    // --- 3. 手勢偵測邏輯 ---
+    const hands = new Hands({
+        locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+    });
+
+    hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.5 });
+
+    hands.onResults(results => {
+        if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+            msg.innerText = "✅ AI 連線成功：手勢控制中";
+            isMouseActive = false; // 優先使用手勢
+            const h = results.multiHandLandmarks[0];
+            
+            // 旋轉映射
+            targetY = (h[9].x - 0.5) * -6;
+            targetX = (h[9].y - 0.5) * 4;
+            
+            // 縮放映射 (食指 8 與大拇指 4)
+            const d = Math.hypot(h[8].x - h[4].x, h[8].y - h[4].y);
+            targetZ = 8 - (d * 15);
+        } else {
+            msg.innerText = "👋 未偵測到手 (滑鼠測試模式)";
+        }
+    });
+
+    // --- 4. 備援滑鼠控制 ---
+    window.addEventListener('mousemove', (e) => {
+        if (msg.innerText.includes("未偵測到手")) {
+            targetY = (e.clientX / window.innerWidth - 0.5) * 6;
+            targetX = (e.clientY / window.innerHeight - 0.5) * 4;
+        }
+    });
+
+    // --- 5. 渲染與相機啟動 ---
+    function animate() {
+        // 平滑慣性運動
+        cube.rotation.y += (targetY - cube.rotation.y) * 0.1;
+        cube.rotation.x += (targetX - cube.rotation.x) * 0.1;
+        camera.position.z += (targetZ - camera.position.z) * 0.1;
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    const cameraHelper = new Camera(videoElement, {
+        onFrame: async () => { await hands.send({image: videoElement}); },
+        width: 640, height: 480
+    });
+    cameraHelper.start();
+</script>
+</body>
+</html>
+
