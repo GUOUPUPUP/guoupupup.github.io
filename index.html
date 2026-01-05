@@ -2,36 +2,35 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>AI 手勢控制立方體</title>
+    <title>AI 手勢立方體 - I Love Jia</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
     <style>
-        body { margin: 0; background: #000; overflow: hidden; font-family: sans-serif; }
-        #v-preview { position: fixed; bottom: 15px; right: 15px; width: 140px; transform: scaleX(-1); border: 2px solid #fff; border-radius: 8px; z-index: 10; }
-        #overlay { position: fixed; top: 15px; left: 15px; color: #fff; background: rgba(0,0,0,0.6); padding: 12px; border-radius: 8px; z-index: 10; pointer-events: none; }
+        body { margin: 0; background: #000; overflow: hidden; font-family: 'Arial', sans-serif; }
+        #v-preview { position: fixed; bottom: 20px; right: 20px; width: 150px; transform: scaleX(-1); border: 2px solid #00f2ff; border-radius: 10px; z-index: 10; }
+        #overlay { position: fixed; top: 20px; left: 20px; color: #00f2ff; z-index: 10; text-shadow: 0 0 10px #00f2ff; }
     </style>
 </head>
 <body>
 
 <div id="overlay">
-    <div id="msg">🚀 正在初始化 3D 空間...</div>
-    <small>🖐️ 揮手旋轉 | 🤏 捏合縮放 | 🖱️ 滑鼠也可控制</small>
+    <h2>💖 Gesture Cube</h2>
+    <p id="msg">等待 AI 啟動...</p>
 </div>
 <video id="v-preview"></video>
 
 <script>
     const msg = document.getElementById('msg');
-    const videoElement = document.getElementById('v-preview');
 
-    // --- 1. Three.js 初始化 ---
+    // --- 1. Three.js 場景設定 ---
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-// --- 2. 建立文字貼圖函式 ---
+    // --- 2. 建立文字貼圖函式 ---
     function createTextMaterial(text) {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
@@ -128,5 +127,6 @@
 </script>
 </body>
 </html>
+
 
 
