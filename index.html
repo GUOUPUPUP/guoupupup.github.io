@@ -1,126 +1,98 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>AI 眼動拼寫器 - 專業校準版</title>
-    <script src="https://webgazer.cs.brown.edu/webgazer.js"></script>
+    <meta charset="utf-8">
+    <title>AI 手勢控制立方體</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
     <style>
-        body { font-family: sans-serif; margin: 0; background: #f0f0f0; }
-        /* 校準點樣式 */
-        .calibration-point {
-            width: 20px; height: 20px; background: red; border-radius: 50%;
-            position: fixed; cursor: pointer; z-index: 999; border: 2px solid white;
-        }
-        #output { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); 
-                  width: 80%; height: 60px; background: white; border: 2px solid #333; 
-                  font-size: 24px; display: none; align-items: center; padding: 0 15px; z-index: 100; }
-        #keyboard { display: none; grid-template-columns: repeat(7, 1fr); gap: 10px; 
-                    padding: 20px; margin-top: 100px; height: 80vh; }
-        .key { background: white; border: 1px solid #ccc; display: flex; 
-               align-items: center; justify-content: center; font-size: 2rem; 
-               transition: 0.2s; border-radius: 8px; }
-        .gaze-focus { background: #ffeb3b !important; transform: scale(1.05); border: 2px solid orange; }
-        #instructions { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                        text-align: center; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        body { margin: 0; background: #000; overflow: hidden; font-family: sans-serif; }
+        #v-preview { position: fixed; bottom: 15px; right: 15px; width: 140px; transform: scaleX(-1); border: 2px solid #fff; border-radius: 8px; z-index: 10; }
+        #overlay { position: fixed; top: 15px; left: 15px; color: #fff; background: rgba(0,0,0,0.6); padding: 12px; border-radius: 8px; z-index: 10; pointer-events: none; }
     </style>
 </head>
 <body>
 
-<div id="instructions">
-    <h2>眼動儀校準</h2>
-    <p>請用眼睛盯著紅色點，並用滑鼠點擊它。<br>每個點點擊 5 次，直到點變為綠色。</p>
-    <button onclick="startCalibration()">開始校準</button>
+<div id="overlay">
+    <div id="msg">🚀 正在初始化 3D 空間...</div>
+    <small>🖐️ 揮手旋轉 | 🤏 捏合縮放 | 🖱️ 滑鼠也可控制</small>
 </div>
-
-<div id="output">拼寫：<span id="text-result"></span></div>
-<div id="keyboard"></div>
-
-<div id="calibration-overlay" style="display:none;">
-    <div class="calibration-point" style="top: 10%; left: 10%;" data-count="0"></div>
-    <div class="calibration-point" style="top: 10%; left: 50%;" data-count="0"></div>
-    <div class="calibration-point" style="top: 10%; left: 90%;" data-count="0"></div>
-    <div class="calibration-point" style="top: 50%; left: 10%;" data-count="0"></div>
-    <div class="calibration-point" style="top: 50%; left: 50%;" data-count="0"></div>
-    <div class="calibration-point" style="top: 50%; left: 90%;" data-count="0"></div>
-    <div class="calibration-point" style="top: 90%; left: 10%;" data-count="0"></div>
-    <div class="calibration-point" style="top: 90%; left: 50%;" data-count="0"></div>
-    <div class="calibration-point" style="top: 90%; left: 90%;" data-count="0"></div>
-</div>
+<video id="v-preview"></video>
 
 <script>
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ ".split("");
-    let dwellTimer = null, currentKey = null, pointsClicked = 0;
+    const msg = document.getElementById('msg');
+    const videoElement = document.getElementById('v-preview');
 
-    function startCalibration() {
-        document.getElementById('instructions').style.display = 'none';
-        document.getElementById('calibration-overlay').style.display = 'block';
-        
-        webgazer.setRegression('ridge')
-            .setGazeListener((data, timestamp) => {
-                if (data && document.getElementById('keyboard').style.display === 'grid') {
-                    checkGaze(data.x, data.y);
-                }
-            }).begin();
-        
-        webgazer.applyKalmanFilter(true); // 啟用濾波器減少跳動
-        webgazer.showVideoPreview(true).showPredictionPoints(true);
-    }
+    // --- 1. Three.js 初始化 ---
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-    // 點擊校準點邏輯
-    document.querySelectorAll('.calibration-point').forEach(pt => {
-        pt.addEventListener('click', function() {
-            let count = parseInt(this.dataset.count) + 1;
-            this.dataset.count = count;
-            this.style.opacity = 1 - (count * 0.15); // 點擊越多次越透明
-            
-            if (count >= 5) {
-                this.style.background = 'green';
-                this.style.pointerEvents = 'none';
-                pointsClicked++;
-                if (pointsClicked >= 9) finishCalibration();
-            }
-        });
+    // 建立一個彩色漸層立方體
+    const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+    const material = new THREE.MeshNormalMaterial(); // 自動根據面方向變色
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    camera.position.z = 5;
+
+    // --- 2. 控制變數 ---
+    let targetX = 0, targetY = 0, targetZ = 5;
+    let isMouseActive = false;
+
+    // --- 3. 手勢偵測邏輯 ---
+    const hands = new Hands({
+        locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
     });
 
-    function finishCalibration() {
-        document.getElementById('calibration-overlay').style.display = 'none';
-        document.getElementById('keyboard').style.display = 'grid';
-        document.getElementById('output').style.display = 'flex';
-        initKeyboard();
-    }
+    hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.5 });
 
-    function initKeyboard() {
-        const kb = document.getElementById('keyboard');
-        kb.innerHTML = '';
-        alphabet.forEach(char => {
-            const div = document.createElement('div');
-            div.className = 'key';
-            div.innerText = char === " " ? "SPACE" : char;
-            div.dataset.char = char;
-            kb.appendChild(div);
-        });
-    }
-
-    function checkGaze(x, y) {
-        const target = document.elementFromPoint(x, y);
-        if (target && target.classList.contains('key')) {
-            if (currentKey !== target) {
-                clearTimeout(dwellTimer);
-                if (currentKey) currentKey.classList.remove('gaze-focus');
-                currentKey = target;
-                currentKey.classList.add('gaze-focus');
-                dwellTimer = setTimeout(() => {
-                    document.getElementById('text-result').innerText += currentKey.dataset.char;
-                }, 1500); // 增加到 1.5 秒減少誤觸
-            }
+    hands.onResults(results => {
+        if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+            msg.innerText = "✅ AI 連線成功：手勢控制中";
+            isMouseActive = false; // 優先使用手勢
+            const h = results.multiHandLandmarks[0];
+            
+            // 旋轉映射
+            targetY = (h[9].x - 0.5) * -6;
+            targetX = (h[9].y - 0.5) * 4;
+            
+            // 縮放映射 (食指 8 與大拇指 4)
+            const d = Math.hypot(h[8].x - h[4].x, h[8].y - h[4].y);
+            targetZ = 8 - (d * 15);
         } else {
-            if (currentKey) {
-                currentKey.classList.remove('gaze-focus');
-                clearTimeout(dwellTimer);
-                currentKey = null;
-            }
+            msg.innerText = "👋 未偵測到手 (滑鼠測試模式)";
         }
+    });
+
+    // --- 4. 備援滑鼠控制 ---
+    window.addEventListener('mousemove', (e) => {
+        if (msg.innerText.includes("未偵測到手")) {
+            targetY = (e.clientX / window.innerWidth - 0.5) * 6;
+            targetX = (e.clientY / window.innerHeight - 0.5) * 4;
+        }
+    });
+
+    // --- 5. 渲染與相機啟動 ---
+    function animate() {
+        // 平滑慣性運動
+        cube.rotation.y += (targetY - cube.rotation.y) * 0.1;
+        cube.rotation.x += (targetX - cube.rotation.x) * 0.1;
+        camera.position.z += (targetZ - camera.position.z) * 0.1;
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
     }
+    animate();
+
+    const cameraHelper = new Camera(videoElement, {
+        onFrame: async () => { await hands.send({image: videoElement}); },
+        width: 640, height: 480
+    });
+    cameraHelper.start();
 </script>
 </body>
 </html>
