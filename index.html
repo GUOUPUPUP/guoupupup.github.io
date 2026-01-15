@@ -1,3 +1,4 @@
+// --- 在初始化立方體的部分進行修改 ---
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,42 +33,11 @@
     document.body.appendChild(renderer.domElement);
 
     // 建立一個彩色漸層立方體
+    // --- 在初始化立方體的部分進行修改 ---
+
 // 1. 建立一個函數來生成文字貼圖
 function createTextTexture(text) {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 256;
-    canvas.height = 256;
-
-    // 背景顏色
-    ctx.fillStyle = '#1e293b'; 
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // 文字樣式
-    ctx.font = 'Bold 60px Arial';
-    ctx.fillStyle = '#38bdf8'; // 亮藍色文字
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    
-    // 將文字畫在畫布中央
-    ctx.fillText(text, 128, 128);
-
-    const texture = new THREE.CanvasTexture(canvas);
-    return new THREE.MeshBasicMaterial({ map: texture });
-}
-
-// 2. 為六個面準備不同的材質
-// 順序通常是：右、左、上、下、前、後
-const materials = [
-    createTextTexture('I'),      // 右面
-    createTextTexture('LOVE'),   // 左面
-    createTextTexture('Jia'),    // 上面
-    createTextTexture('I'),      // 下面
-    createTextTexture('LOVE'),   // 前面
-    createTextTexture('Jia')     // 後面
-];
-
-// 3. 建立立方體時使用材質陣列
+@@ -39,3 +73,64 @@
 const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
 const cube = new THREE.Mesh(geometry, materials); // 傳入陣列
 scene.add(cube);
@@ -130,6 +100,3 @@ scene.add(cube);
     cameraHelper.start();
 </script>
 </body>
-</html>
-
-
